@@ -11,7 +11,6 @@ import numpy as np
 import time 
 from datetime import datetime, timedelta 
 from netCDF4 import num2date, date2num 
-import constants
 
 ##--------------------------------------------------------------------------
 ##--------------------------------------------------------------------------
@@ -135,7 +134,7 @@ if data1['dx'] == 5000.0: str_domain = 'Parent' # domain option
 ###################################
 ## Open File
 ###################################
-outfile = "".join(['OUT/',runlab,'_',str_domain,'.nc'])
+outfile = "".join(['OUT/',runlab'.nc'])
 dataset =  Dataset(outfile, 'w', format ='NETCDF4_CLASSIC') 
 
 print dataset.file_format 
@@ -143,23 +142,14 @@ print dataset.file_format
 ###################################
 ## Global Attributes (Cont.)
 ###################################
-str_levels = "%1i" % np.size(data1['theta'],1) # number of vertical levels
-str_xdim = "%1i" % data1['x_dim'] # number of grid points in x
-str_ydim = "%1i" % data1['y_dim'] # number of grid points in y
-str_width = "%.1f" % data1['width_meters'] # domain width (x) in m
-str_height = "%.1f" % data1['height_meters'] # domain height (y) in m
-str_latmin = "%.4f" % np.nanmin(data1['xlat']*-1)
-str_latmax = "%.4f" % np.nanmax(data1['xlat']*-1)
-str_lonmin = "%.4f" % np.nanmin(data1['xlon']*-1)
-str_lonmax = "%.4f" % np.nanmax(data1['xlon']*-1)
-desc = runlab + ' simulation from Young et al., 2019 (GRL) -- ' + str_domain + ' domain. x/y grid size = ' + str_dx + ' m with ' + str_levels + ' vertical levels. Domain size = ' + str_xdim + ' x ' + str_ydim + ' grid points, equalling ' + str_width + ' x ' + str_height + ' m, from ' + str_latmax + ' degS to ' + str_latmin + ' degS and ' + str_lonmax + ' degW to ' + str_lonmin + ' degW.'
+desc = runlab + ' simulation from Young et al., 2017 (ACP). x/y grid size = 120m with 105 vertical levels (20m resolution up to 1500m, then 50m resolution between 1500m and 3000m). Domain size = 16km x 16km.'
 dataset.description = desc
 dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-dataset.source = 'Weather Research and Forecasting (WRF) model, version 3.6.1, with polar updates from the Byrd Polar Research Center (http://polarmet.osu.edu/PWRF/).' 
-dataset.references = 'First published in Young et al., 2019 (GRL): Radiative effects of secondary ice enhancement in coastal Antarctic clouds.'
-dataset.project = 'Microphysics of Antarctic Clouds (MAC), funded by the UK Natural Environment Research Council (Grant no. NE/K01305X/1).'
-dataset.comment = 'Other WRF variables from this simulation are archived locally at the British Antarctic Survey. Contact Gillian Young (G.Young1@leeds.ac.uk) for details.'
-dataset.institution = 'British Antarctic Survey.'
+dataset.source = 'UK Met Office Large Eddy Model (LEM), version 2.4, coupled with the Morrison et al., 2005 (JAS) microphysics scheme (ported from the Weather Research and Forecasting model).' 
+dataset.references = 'First published in Young et al., 2017 (ACP): Microphysical sensitivity of coupled springtime Arctic stratocumulus to modelled primary ice over the ice pack, marginal ice, and ocean. (doi:10.5194/acp-17-4209-2017)'
+dataset.project = 'Aerosol-Cloud Coupling and Climate Interactions in the Arctic (ACCACIA), funded by the UK Natural Environment Research Council (Grant no. NE/I028696/1).'
+dataset.comment = 'Other LEM variables from this simulation are archived locally at the University of Manchester. Contact Gillian Young (G.Young1@leeds.ac.uk) for details.'
+dataset.institution = 'University of Manchester.'
 
 ###################################
 ## Switch off automatic filling 
