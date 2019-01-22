@@ -142,13 +142,6 @@ level = dataset.createDimension('level', np.size(icenum1,1))
 ###################################
 ## Dimensions variables
 ###################################
-times = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999') 
-levels = dataset.createVariable('level', np.float32, ('level',),fill_value='-9999') 
-
-
-###################################
-## Dimensions variables
-###################################
 #### Times
 times = dataset.createVariable('time', np.float64, ('time',),fill_value='-9999') 
 times.comment = 'hourly data dumps'
@@ -168,35 +161,35 @@ levels[:] = Z1[:]
 ###################################
 ###################################
 #### Nisg
-nisg = dataset.createVariable('nisg', np.float32, ('time','level',),fill_value='-9999')
+nisg = dataset.createVariable('nisg', np.float64, ('time','level',),fill_value='-9999')
 nisg.long_name = 'total ice number concentration'
 nisg.comment = 'Sum of ice, snow, and graupel particles'
 nisg.units = 'm-3'
 nisg[:] = icenum1[:]
 
 #### Nisg100
-nisg100 = dataset.createVariable('nisg100', np.float32, ('time','level',),fill_value='-9999')
+nisg100 = dataset.createVariable('nisg100', np.float64, ('time','level',),fill_value='-9999')
 nisg100.long_name = 'total ice number concentration greater than 100micron'
 nisg100.comment = 'Sum of ice, snow, and graupel particles of sizes greater than 100micron'
 nisg100.units = 'm-3'
 nisg100[:] = largeice1[:]
 
 #### Qliq
-qliq = dataset.createVariable('qliq', np.float32, ('time','level',),fill_value='-9999')
+qliq = dataset.createVariable('qliq', np.float64, ('time','level',),fill_value='-9999')
 qliq.long_name = 'cloud liquid mass mixing ratio'
 qliq.comment = 'Only cloud liquid field included; rain category is separate.'
 qliq.units = 'kg kg-1'
 qliq[:] = liqmass1[:]
 
 #### Qvap
-qvap = dataset.createVariable('qvap', np.float32, ('time','level',),fill_value='-9999')
+qvap = dataset.createVariable('qvap', np.float64, ('time','level',),fill_value='-9999')
 qvap.long_name = 'water vapour mixing ratio'
 qvap.comment = ''
 qvap.units = 'kg kg-1'
 qvap[:] = watvap1[:]
 
 #### Temperature
-temp = dataset.createVariable('temp', np.float32, ('time','level',),fill_value='-9999')
+temp = dataset.createVariable('temp', np.float64, ('time','level',),fill_value='-9999')
 temp.long_name = 'temperature'
 temp.comment = ''
 temp.units = 'K'
