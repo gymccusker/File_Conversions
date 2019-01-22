@@ -61,7 +61,7 @@ rundir = '/gws/nopw/j04/ncas_weather/gyoung/ACCACIA/LEM/'
 nc1 = {}		# define nc1 as a dictionary
 strg1 = "%2.f" % run1 
 strg0 = ''.join(['r',strg1])
-os.chdir(strg1)
+os.chdir(strg0)
 for i in range(0, len(hours)):
 	strg2 = "%02d" % hours[i] # string of hour index
 	a1 = ''.join(['RUN0',strg1,'_00',strg2,'.nc']) # string of filename
