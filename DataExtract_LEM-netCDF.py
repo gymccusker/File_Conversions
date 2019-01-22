@@ -102,7 +102,7 @@ for i in range(0, len(hours)):
 ###################################
 
 ## Define dictionaries
-ice_num1 = {}; liqmass1 = {}; temp_K1 = {}; incloud1 = {}
+ice_num1 = {}; liqmass1 = {}; temp_K1 = {}; incloud1 = {}; pres1 = {}; evs1 = {}; qvs1 = {}; rh1 = {}
 
 for i in range(0, len(hours)):
 	strgi = "%1.f" % (i+1) # string of hour number
