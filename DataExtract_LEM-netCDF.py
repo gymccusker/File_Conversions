@@ -28,14 +28,16 @@ import os
 run1 = 120
 info1 = 'C86_Ocean'
 
-# run7='120';
+# run7='120';		YES
 # info7='C86';
 
-# run8='135';
+# run8='135';		YES
 # info8='D10';
 
-# run9='143';
+# run9='143';		YES
 # info9='ACC';
+
+## /gws/nopw/j04/ncas_weather/gyoung/ACCACIA/ModellingScripts/mod_obs_comp_noNice.m
 
 
 ###################################
