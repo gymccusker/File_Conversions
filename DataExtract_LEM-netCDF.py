@@ -119,7 +119,7 @@ print dataset.file_format
 ## Global Attributes
 ###################################
 info2 = ' Cooper et al., 1986 parametrization used for primary ice nucleation. Model assumes oceanic surface.'
-desc = info1 + ' simulation from Young et al., 2017 (ACP). x/y grid size = 130x130 grid points (120m grid size) with 105 vertical levels (20m resolution up to 1500m, then 50m resolution between 1500m and 3000m). Domain size = 16km x 16km, centred on 75.0N, 24.5E. Model initialised with radiosonde data (sonde number 5) from ACCACIA flight B762 (23-MAR-2013).' + info2
+desc = info1 + ' simulation from Young et al., 2017 (ACP). x/y grid size = 130x130 grid points (120m grid size) with 104 vertical levels (20m resolution up to 1500m, then 50m resolution between 1500m and 3000m). Domain size = 16km x 16km, centred on 75.0N, 24.5E. Model initialised with radiosonde data (sonde number 5) from ACCACIA flight B762 (23-MAR-2013).' + info2
 dataset.description = desc
 dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 dataset.source = 'UK Met Office Large Eddy Model (LEM), version 2.4, coupled with the Morrison et al., 2005 (JAS) microphysics scheme (ported from the Weather Research and Forecasting model).' 
@@ -143,13 +143,13 @@ level = dataset.createDimension('level', np.size(icenum1,1))
 ## Dimensions variables
 ###################################
 #### Times
-times = dataset.createVariable('time', np.float64, ('time',),fill_value='-9999') 
+times = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999') 
 times.comment = 'hourly data dumps'
 times.units = ['hours since 09:00:00 on 23-MAR-2013']
 times[:] = times1[:]
 
 #### Levels
-levels = dataset.createVariable('level', np.float64, ('level',),fill_value='-9999') 
+levels = dataset.createVariable('level', np.float32, ('level',),fill_value='-9999') 
 levels.long_name = 'Altitude'
 levels.comment = 'Levels spaced by 20m up to 1500m, then spaced by 50m between 1500m and 3000m'
 levels.units = 'm'
@@ -161,35 +161,35 @@ levels[:] = Z1[:]
 ###################################
 ###################################
 #### Nisg
-nisg = dataset.createVariable('nisg', np.float64, ('time','level',),fill_value='-9999')
+nisg = dataset.createVariable('nisg', np.float32, ('time','level',),fill_value='-9999')
 nisg.long_name = 'total ice number concentration'
 nisg.comment = 'Sum of ice, snow, and graupel particles'
 nisg.units = 'm-3'
 nisg[:] = icenum1[:]
 
 #### Nisg100
-nisg100 = dataset.createVariable('nisg100', np.float64, ('time','level',),fill_value='-9999')
+nisg100 = dataset.createVariable('nisg100', np.float32, ('time','level',),fill_value='-9999')
 nisg100.long_name = 'total ice number concentration greater than 100micron'
 nisg100.comment = 'Sum of ice, snow, and graupel particles of sizes greater than 100micron'
 nisg100.units = 'm-3'
 nisg100[:] = largeice1[:]
 
 #### Qliq
-qliq = dataset.createVariable('qliq', np.float64, ('time','level',),fill_value='-9999')
+qliq = dataset.createVariable('qliq', np.float32, ('time','level',),fill_value='-9999')
 qliq.long_name = 'cloud liquid mass mixing ratio'
 qliq.comment = 'Only cloud liquid field included; rain category is separate.'
 qliq.units = 'kg kg-1'
 qliq[:] = liqmass1[:]
 
 #### Qvap
-qvap = dataset.createVariable('qvap', np.float64, ('time','level',),fill_value='-9999')
+qvap = dataset.createVariable('qvap', np.float32, ('time','level',),fill_value='-9999')
 qvap.long_name = 'water vapour mixing ratio'
 qvap.comment = ''
 qvap.units = 'kg kg-1'
 qvap[:] = watvap1[:]
 
 #### Temperature
-temp = dataset.createVariable('temp', np.float64, ('time','level',),fill_value='-9999')
+temp = dataset.createVariable('temp', np.float32, ('time','level',),fill_value='-9999')
 temp.long_name = 'temperature'
 temp.comment = ''
 temp.units = 'K'
