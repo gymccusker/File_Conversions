@@ -102,12 +102,14 @@ for i in range(0, len(hours)):
 ###################################
 
 ## Define dictionaries
-ice_num1 = {}; liqmass1 = {}; temp_K1 = {}; incloud1 = {}; pres1 = {}; evs1 = {}; qvs1 = {}; rh1 = {}
+ice_num1 = {}; liqmass1 = {}; temp_K1 = {}; incloud1 = {}; pres1 = {}; evs1 = {}; qvs1 = {}; rh1 = {};
+watvap1 = {}
 
 for i in range(0, len(hours)):
 	strgi = "%1.f" % (i+1) # string of hour number
 	ice_num1[strgi] = (nc1[strgi]['QBAR07'][:]+nc1[strgi]['QBAR08'][:]+nc1[strgi]['QBAR09'][:])			# Nisg m-3
 	liqmass1[strgi] = (nc1[strgi]['QBAR02'][:]+nc1[strgi]['QBAR03'][:]) 								# Qliq(tot) kg/kg
+    watvap1[strgi] = nc1[strgi]['QBAR01'][:]															# Qvap g/kg
 	temp_K1[strgi] = nc1[strgi]['ALL_TEMP'][:]															# Temp K
 	pres1[strgi] = nc1[strgi]['PREFN'][:]																# Pressure Pa
 	evs1[strgi] = (0.611*np.exp(17.27*(temp_K1[strgi]-273.15)/((temp_K1[strgi]-273.15)+237.3)))*1000
