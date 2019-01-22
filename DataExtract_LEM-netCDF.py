@@ -89,7 +89,7 @@ for i in range(0, len(hours)):
 	largeice1[i,:] = nc1[strgi]['ALL_Ni100'][:]+nc1[strgi]['ALL_Nis100'][:]
 	liqmass1[i,:] = nc1[strgi]['QBAR02'][:]
 	watvap1[i,:] = nc1[strgi]['QBAR01'][:]
-	tempK1[i,:] = nc1[strgi]['ALL_TEMP'][1:]
+	tempK1[i,1:] = nc1[strgi]['ALL_TEMP'][1:]
 	pres1[i,:] = nc1[strgi]['PREFN'][:]
 	evs1[i,:] = (0.611*np.exp(17.27*(tempK1[i,:]-273.15)/((tempK1[i,:]-273.15)+237.3)))*1000
 	qvs1[i,:] = (0.622*evs1[i,:])/(pres1[i,:]-evs1[i,:])
