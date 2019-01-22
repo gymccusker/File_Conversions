@@ -129,7 +129,7 @@ times=np.arange(1,13)
 ###################################
 ## Open File
 ###################################
-outfile = "".join([info1'.nc'])
+outfile = "".join([info1,'.nc'])
 dataset =  Dataset(outfile, 'w', format ='NETCDF4_CLASSIC') 
 
 print dataset.file_format 
