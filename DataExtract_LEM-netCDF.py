@@ -73,33 +73,33 @@ for i in range(0, len(hours)):
 ###################################
 
 ## Define data
-icenum1 = np.zeros([24,105])
-largeice1 = np.zeros([24,105])
-liqmass1 = np.zeros([24,105])
-watvap1 = np.zeros([24,105])
-tempK1 = np.zeros([24,105])
-pres1 = np.zeros([24,105])
-evs1 = np.zeros([24,105])
-qvs1 = np.zeros([24,105])
-rh1 = np.zeros([24,105])
-incloud1 = np.zeros([24,105])
+icenum1 = np.zeros([24,104])
+largeice1 = np.zeros([24,104])
+liqmass1 = np.zeros([24,104])
+watvap1 = np.zeros([24,104])
+tempK1 = np.zeros([24,104])
+pres1 = np.zeros([24,104])
+evs1 = np.zeros([24,104])
+qvs1 = np.zeros([24,104])
+rh1 = np.zeros([24,104])
+incloud1 = np.zeros([24,104])
 for i in range(0, len(hours)):
 	strgi = "%1.f" % (i+1) # string of hour number
-	icenum1[i,:] = nc1[strgi]['QBAR07'][:]+nc1[strgi]['QBAR08'][:]+nc1[strgi]['QBAR09'][:]
-	largeice1[i,:] = nc1[strgi]['ALL_Ni100'][:]+nc1[strgi]['ALL_Nis100'][:]
-	liqmass1[i,:] = nc1[strgi]['QBAR02'][:]
-	watvap1[i,:] = nc1[strgi]['QBAR01'][:]
+	icenum1[i,:] = nc1[strgi]['QBAR07'][1:]+nc1[strgi]['QBAR08'][1:]+nc1[strgi]['QBAR09'][1:]
+	largeice1[i,:] = nc1[strgi]['ALL_Ni100'][1:]+nc1[strgi]['ALL_Nis100'][1:]
+	liqmass1[i,:] = nc1[strgi]['QBAR02'][1:]
+	watvap1[i,:] = nc1[strgi]['QBAR01'][1:]
 	tempK1[i,1:] = nc1[strgi]['ALL_TEMP'][1:]
-	pres1[i,:] = nc1[strgi]['PREFN'][:]
+	pres1[i,:] = nc1[strgi]['PREFN'][1:]
 	evs1[i,:] = (0.611*np.exp(17.27*(tempK1[i,:]-273.15)/((tempK1[i,:]-273.15)+237.3)))*1000
 	qvs1[i,:] = (0.622*evs1[i,:])/(pres1[i,:]-evs1[i,:])
 	rh1[i,:] = ((watvap1[i,:])/qvs1[i,:])*100
 	# incloud1[i,:] = (rh1[i,:]>=100).nonzero()
 timesec1 = (nc1['24']['TIMES'][:])/3600
-Z1 = nc1['24']['ZN'][:]
-X1 = nc1['24']['XN'][:]
-Y1 = nc1['24']['YN'][:]
-times1=np.arange(1,23)
+Z1 = nc1['24']['ZN'][1:]
+# X1 = nc1['24']['XN'][:]
+# Y1 = nc1['24']['YN'][:]
+times1=np.arange(1,25)
 
 ##--------------------------------------------------------------------------
 ##--------------------------------------------------------------------------
@@ -143,20 +143,20 @@ level = dataset.createDimension('level', np.size(icenum1,1))
 ## Dimensions variables
 ###################################
 times = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999') 
-levels = dataset.createVariable('level', np.int32, ('level',),fill_value='-9999') 
+levels = dataset.createVariable('level', np.float32, ('level',),fill_value='-9999') 
 
 
 ###################################
 ## Dimensions variables
 ###################################
 #### Times
-times = dataset.createVariable('time', np.float64, ('Time_mid',),fill_value='-9999') 
-times.comment = 'Data dumps every 30mins'
+times = dataset.createVariable('time', np.float64, ('time',),fill_value='-9999') 
+times.comment = 'hourly data dumps'
 times.units = ['hours since 09:00:00 on 23-MAR-2013']
 times[:] = times1[:]
 
 #### Levels
-levels = dataset.createVariable('level', np.float64, ('Time_mid',),fill_value='-9999') 
+levels = dataset.createVariable('level', np.float64, ('time',),fill_value='-9999') 
 levels.long_name = 'Altitude'
 levels.comment = 'Levels spaced by 20m up to 1500m, then spaced by 50m between 1500m and 3000m'
 levels.units = 'm'
