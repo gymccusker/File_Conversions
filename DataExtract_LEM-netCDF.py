@@ -109,12 +109,13 @@ for i in range(0, len(hours)):
 	ice_num1[strgi] = (nc1[strgi]['QBAR07'][:]+nc1[strgi]['QBAR08'][:]+nc1[strgi]['QBAR09'][:])			# Nisg m-3
 	liqmass1[strgi] = (nc1[strgi]['QBAR02'][:]+nc1[strgi]['QBAR03'][:]) 								# Qliq(tot) kg/kg
 	temp_K1[strgi] = nc1[strgi]['ALL_TEMP'][:]															# Temp K
-	# evs1[strgi] = (0.611*np.exp(17.27*(temp_K1[strgi]-273.15)/((temp_K1[strgi]-273.15)+237.3)))*1000
-	# qvs1[strgi] = (0.622*evs1[strgi])/(pres1[strgi]-evs1[strgi])
-	# rh1[strgi] = ((watvap1[strgi]/1000)/qvs1[strgi])*100
+	pres1[strgi] = nc1[strgi]['PREFN'][:]																# Pressure Pa
+	evs1[strgi] = (0.611*np.exp(17.27*(temp_K1[strgi]-273.15)/((temp_K1[strgi]-273.15)+237.3)))*1000
+	qvs1[strgi] = (0.622*evs1[strgi])/(pres1[strgi]-evs1[strgi])
+	rh1[strgi] = ((watvap1[strgi]/1000)/qvs1[strgi])*100
 	incloud1[strgi] = (rh1[strgi]>=100).nonzero()
 timesec1 = (nc1['12']['TIMES'][:])/3600
-Z1 = nc1['12']['Z'][:]																					# Z m
+Z1 = nc1['12']['ZN'][:]																					# Z m
 X1 = nc1['12']['XN'][:]																					# X m
 Y1 = nc1['12']['YN'][:]																					# Y m
 times=np.arange(1,13)
