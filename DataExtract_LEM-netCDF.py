@@ -73,16 +73,16 @@ for i in range(0, len(hours)):
 ###################################
 
 ## Define data
-icenum1 = np.zeros([12,105])
-largeice1 = np.zeros([12,105])
-liqmass1 = np.zeros([12,105])
-watvap1 = np.zeros([12,105])
-tempK1 = np.zeros([12,105])
-pres1 = np.zeros([12,105])
-evs1 = np.zeros([12,105])
-qvs1 = np.zeros([12,105])
-rh1 = np.zeros([12,105])
-incloud1 = np.zeros([12,105])
+icenum1 = np.zeros([24,105])
+largeice1 = np.zeros([24,105])
+liqmass1 = np.zeros([24,105])
+watvap1 = np.zeros([24,105])
+tempK1 = np.zeros([24,105])
+pres1 = np.zeros([24,105])
+evs1 = np.zeros([24,105])
+qvs1 = np.zeros([24,105])
+rh1 = np.zeros([24,105])
+incloud1 = np.zeros([24,105])
 for i in range(0, len(hours)):
 	strgi = "%1.f" % (i+1) # string of hour number
 	icenum1[i,:] = nc1[strgi]['QBAR07'][:]+nc1[strgi]['QBAR08'][:]+nc1[strgi]['QBAR09'][:]
