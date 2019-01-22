@@ -44,7 +44,7 @@ info1 = 'C86_Ocean'
 # Define time dump separation
 ###################################
 
-hours = np.array([7,11,15,19,23,27,31,35,39,43,47,51])
+hours = np.array([7 11 15 19 23 27 31 35 39 43 47 51 55 59,63 67 71 75 79 83 87 91 95 99])
 
 # os.chdir("../LEM/r1")
 
@@ -68,44 +68,16 @@ for i in range(0, len(hours)):
 	strgi = "%1.f" % (i+1) # string of hour number
 	nc1[strgi] = Dataset(a1,'r')
 
-# ###################################
-# # Pick file
-# ###################################
-# filename1 = '/data/scihub-users/giyoung/PWRF_V3.6.1/RUNS/MAC_WRF/31_DeMott_WATSAT_eta70_MYNN/wrfout_d02_2015-11-27_00:00:00'
-# # filename1 = '/data/scihub-users/giyoung/PWRF_V3.6.1/RUNS/MAC_WRF/31_DeMott_WATSAT_eta70_MYNN/wrfout_d01_2015-11-27_00:00:00'
-# # filename1 = '/data/scihub-users/giyoung/PWRF_V3.6.1/RUNS/MAC_WRF/30_DeMott_WATSAT_HM_noThresh_eta70_MYNN/wrfout_d02_2015-11-27_00:00:00'
-# # filename1 = '/data/scihub-users/giyoung/PWRF_V3.6.1/RUNS/MAC_WRF/30_DeMott_WATSAT_HM_noThresh_eta70_MYNN/wrfout_d01_2015-11-27_00:00:00'
-# # filename1 = '/data/scihub-users/giyoung/PWRF_V3.6.1/RUNS/MAC_WRF/36_DeMott_WATSAT_2xHM_noThresh_eta70_MYNN/wrfout_d02_2015-11-27_00:00:00'
-# # filename1 = '/data/scihub-users/giyoung/PWRF_V3.6.1/RUNS/MAC_WRF/36_DeMott_WATSAT_2xHM_noThresh_eta70_MYNN/wrfout_d01_2015-11-27_00:00:00'
-# # filename1 = '/data/scihub-users/giyoung/PWRF_V3.6.1/RUNS/MAC_WRF/57_DeMott_WATSAT_5xHM_noThresh_eta70_MYNN/wrfout_d02_2015-11-27_00:00:00'
-# # filename1 = '/data/scihub-users/giyoung/PWRF_V3.6.1/RUNS/MAC_WRF/57_DeMott_WATSAT_5xHM_noThresh_eta70_MYNN/wrfout_d01_2015-11-27_00:00:00'
-# # filename1 = '/data/scihub-users/giyoung/PWRF_V3.6.1/RUNS/MAC_WRF/56_DeMott_WATSAT_10xHM_noThresh_eta70_MYNN/wrfout_d02_2015-11-27_00:00:00'
-# # filename1 = '/data/scihub-users/giyoung/PWRF_V3.6.1/RUNS/MAC_WRF/56_DeMott_WATSAT_10xHM_noThresh_eta70_MYNN/wrfout_d01_2015-11-27_00:00:00'
-
-# runlabel_start = filename1.find('/MAC_WRF/') + 9
-# runlabel_end = filename1.find('/wrfout',runlabel_start)
-# runlabel = filename1[runlabel_start:runlabel_end]
-
-# if runlabel == '31_DeMott_WATSAT_eta70_MYNN':
-# 	runlab = 'CNTRL'
-# if runlabel == '30_DeMott_WATSAT_HM_noThresh_eta70_MYNN':
-# 	runlab = 'NoThresh'
-# if runlabel == '36_DeMott_WATSAT_2xHM_noThresh_eta70_MYNN':
-# 	runlab = '2xHM'
-# if runlabel == '57_DeMott_WATSAT_5xHM_noThresh_eta70_MYNN':
-# 	runlab = '5xHM'
-# if runlabel == '56_DeMott_WATSAT_10xHM_noThresh_eta70_MYNN':
-# 	runlab = '10xHM'
-
 ###################################
 ## Read in NetCDF variables to usable variables
 ###################################
 
 ## Define data
-ice_num1 = np.zeros([12,105])
+icenum1 = np.zeros([12,105])
+largeice1 = np.zeros([12,105])
 liqmass1 = np.zeros([12,105])
 watvap1 = np.zeros([12,105])
-temp_K1 = np.zeros([12,105])
+tempK1 = np.zeros([12,105])
 pres1 = np.zeros([12,105])
 evs1 = np.zeros([12,105])
 qvs1 = np.zeros([12,105])
@@ -113,20 +85,21 @@ rh1 = np.zeros([12,105])
 incloud1 = np.zeros([12,105])
 for i in range(0, len(hours)):
 	strgi = "%1.f" % (i+1) # string of hour number
-	ice_num1[i,:] = (nc1[strgi]['QBAR07'][:]+nc1[strgi]['QBAR08'][:]+nc1[strgi]['QBAR09'][:])
-	liqmass1[i,:] = (nc1[strgi]['QBAR02'][:]+nc1[strgi]['QBAR03'][:])
+	icenum1[i,:] = (nc1[strgi]['QBAR07'][:]+nc1[strgi]['QBAR08'][:]+nc1[strgi]['QBAR09'][:])
+	largeice1[i,:] = nc1[strgi]['ALL_Ni100'][:]+nc1[strgi]['ALL_Nis100'][:]
+	liqmass1[i,:] = (nc1[strgi]['QBAR02'][:]
 	watvap1[i,:] = nc1[strgi]['QBAR01'][:]
-	temp_K1[i,:] = nc1[strgi]['ALL_TEMP'][:]
+	tempK1[i,:] = nc1[strgi]['ALL_TEMP'][1:]
 	pres1[i,:] = nc1[strgi]['PREFN'][:]
-	evs1[i,:] = (0.611*np.exp(17.27*(temp_K1[i,:]-273.15)/((temp_K1[i,:]-273.15)+237.3)))*1000
+	evs1[i,:] = (0.611*np.exp(17.27*(tempK1[i,:]-273.15)/((tempK1[i,:]-273.15)+237.3)))*1000
 	qvs1[i,:] = (0.622*evs1[i,:])/(pres1[i,:]-evs1[i,:])
 	rh1[i,:] = ((watvap1[i,:])/qvs1[i,:])*100
 	# incloud1[i,:] = (rh1[i,:]>=100).nonzero()
-timesec1 = (nc1['12']['TIMES'][:])/3600
-Z1 = nc1['12']['ZN'][:]
-X1 = nc1['12']['XN'][:]
-Y1 = nc1['12']['YN'][:]
-times=np.arange(1,13)
+timesec1 = (nc1['24']['TIMES'][:])/3600
+Z1 = nc1['24']['ZN'][:]
+X1 = nc1['24']['XN'][:]
+Y1 = nc1['24']['YN'][:]
+times=np.arange(1,23)
 
 ##--------------------------------------------------------------------------
 ##--------------------------------------------------------------------------
@@ -159,34 +132,26 @@ dataset.institution = 'University of Manchester.'
 ###################################
 dataset.set_fill_off()
 
-# ###################################
-# ## Data dimensions
-# ###################################
-# time = dataset.createDimension('time', np.size(data1['xlat'],0))
-# level = dataset.createDimension('level', np.size(data1['theta'],1)) 
-# lat = dataset.createDimension('lat', data1['y_dim'])
-# lon = dataset.createDimension('lon', data1['x_dim']) 
+###################################
+## Data dimensions
+###################################
+time = dataset.createDimension('time', np.size(icenum1,0))
+level = dataset.createDimension('level', np.size(icenum1,1)) 
 
-# ###################################
-# ## Dimensions variables
-# ###################################
-# times = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999') 
-# levels = dataset.createVariable('level', np.int32, ('level',),fill_value='-9999') 
-# latitudes = dataset.createVariable('latitude', np.float32, ('time','lat', 'lon',),fill_value='-9999')
-# longitudes = dataset.createVariable('longitude', np.float32, ('time','lat','lon',),fill_value='-9999') 
+###################################
+## Dimensions variables
+###################################
+times = dataset.createVariable('time', np.float32, ('time',),fill_value='-9999') 
+levels = dataset.createVariable('level', np.int32, ('level',),fill_value='-9999') 
 
-# ###################################
-# ## Create 3-d variables
-# ###################################
-# swdnb = dataset.createVariable('swdnb', np.float32, ('time','lat', 'lon',),fill_value='-9999')
-# swdnbc = dataset.createVariable('swdnbc', np.float32, ('time','lat', 'lon',),fill_value='-9999')
-# lwdnb = dataset.createVariable('lwdnb', np.float32, ('time','lat', 'lon',),fill_value='-9999')
-# lwdnbc = dataset.createVariable('lwdnbc', np.float32, ('time','lat', 'lon',),fill_value='-9999')
-# swupb = dataset.createVariable('swupb', np.float32, ('time','lat', 'lon',),fill_value='-9999')
-# swupbc = dataset.createVariable('swupbc', np.float32, ('time','lat', 'lon',),fill_value='-9999')
-# lwupb = dataset.createVariable('lwupb', np.float32, ('time','lat', 'lon',),fill_value='-9999')
-# lwupbc = dataset.createVariable('lwupbc', np.float32, ('time','lat', 'lon',),fill_value='-9999')
-# seaice = dataset.createVariable('seaice', np.float32, ('time','lat', 'lon',),fill_value='-9999')
+###################################
+## Create 2-d variables
+###################################
+nisg = dataset.createVariable('nisg', np.float32, ('time','levels',),fill_value='-9999')
+nisg100 = dataset.createVariable('nisg100', np.float32, ('time','levels',),fill_value='-9999')
+nisg = dataset.createVariable('nisg', np.float32, ('time','levels',),fill_value='-9999')
+
+
 
 # ###################################
 # ## Create 4-d variables
@@ -326,4 +291,4 @@ dataset.set_fill_off()
 ###################################
 ## Write out file
 ###################################
-dataset.close()
+# dataset.close()
