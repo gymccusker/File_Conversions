@@ -149,7 +149,7 @@ times.units = ['hours since 09:00:00 on 23-MAR-2013']
 times[:] = times1[:]
 
 #### Levels
-levels = dataset.createVariable('level', np.float64, ('time',),fill_value='-9999') 
+levels = dataset.createVariable('level', np.float64, ('level',),fill_value='-9999') 
 levels.long_name = 'Altitude'
 levels.comment = 'Levels spaced by 20m up to 1500m, then spaced by 50m between 1500m and 3000m'
 levels.units = 'm'
