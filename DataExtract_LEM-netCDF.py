@@ -56,7 +56,7 @@ cp = 1004.6      # J/kg.K
 # Load in data
 ###################################
 
-nc1 = {}		# define nc1 as a dictionary
+nc1 = {}			# define nc1 as a dictionary
 strg1 = "%2.f" % run1 
 
 filedir = '/gws/nopw/j04/ncas_weather/gyoung/ACCACIA/LEM/r'
@@ -101,25 +101,31 @@ for i in range(0, len(hours)):
 ## Read in NetCDF variables to usable variables
 ###################################
 
-## Define dictionaries
-ice_num1 = {}; liqmass1 = {}; temp_K1 = {}; incloud1 = {}; pres1 = {}; evs1 = {}; qvs1 = {}; rh1 = {};
-watvap1 = {}
-
+## Define data
+ice_num1 = np.zeros([12,105])
+liqmass1 = np.zeros([12,105])
+watvap1 = np.zeros([12,105])
+temp_K1 = np.zeros([12,105])
+pres1 = np.zeros([12,105])
+evs1 = np.zeros([12,105])
+qvs1 = np.zeros([12,105])
+rh1 = np.zeros([12,105])
+incloud1 = np.zeros([12,105])
 for i in range(0, len(hours)):
 	strgi = "%1.f" % (i+1) # string of hour number
-	ice_num1[strgi] = (nc1[strgi]['QBAR07'][:]+nc1[strgi]['QBAR08'][:]+nc1[strgi]['QBAR09'][:])			# Nisg m-3
-	liqmass1[strgi] = (nc1[strgi]['QBAR02'][:]+nc1[strgi]['QBAR03'][:]) 								# Qliq(tot) kg/kg
-    watvap1[strgi] = nc1[strgi]['QBAR01'][:]															# Qvap g/kg
-	temp_K1[strgi] = nc1[strgi]['ALL_TEMP'][:]															# Temp K
-	pres1[strgi] = nc1[strgi]['PREFN'][:]																# Pressure Pa
-	evs1[strgi] = (0.611*np.exp(17.27*(temp_K1[strgi]-273.15)/((temp_K1[strgi]-273.15)+237.3)))*1000
-	qvs1[strgi] = (0.622*evs1[strgi])/(pres1[strgi]-evs1[strgi])
-	rh1[strgi] = ((watvap1[strgi]/1000)/qvs1[strgi])*100
-	incloud1[strgi] = (rh1[strgi]>=100).nonzero()
+	ice_num1[i,:] = (nc1[strgi]['QBAR07'][:]+nc1[strgi]['QBAR08'][:]+nc1[strgi]['QBAR09'][:])
+	liqmass1[i,:] = (nc1[strgi]['QBAR02'][:]+nc1[strgi]['QBAR03'][:])
+	watvap1[i,:] = nc1[strgi]['QBAR01'][:]
+	temp_K1[i,:] = nc1[strgi]['ALL_TEMP'][:]
+	pres1[i,:] = nc1[strgi]['PREFN'][:]
+	evs1[i,:] = (0.611*np.exp(17.27*(temp_K1[i,:]-273.15)/((temp_K1[i,:]-273.15)+237.3)))*1000
+	qvs1[i,:] = (0.622*evs1[i,:])/(pres1[i,:]-evs1[i,:])
+	rh1[i,:] = ((watvap1[i,:])/qvs1[i,:])*100
+	# incloud1[i,:] = (rh1[i,:]>=100).nonzero()
 timesec1 = (nc1['12']['TIMES'][:])/3600
-Z1 = nc1['12']['ZN'][:]																					# Z m
-X1 = nc1['12']['XN'][:]																					# X m
-Y1 = nc1['12']['YN'][:]																					# Y m
+Z1 = nc1['12']['ZN'][:]
+X1 = nc1['12']['XN'][:]
+Y1 = nc1['12']['YN'][:]
 times=np.arange(1,13)
 
 ##--------------------------------------------------------------------------
@@ -139,7 +145,7 @@ print dataset.file_format
 ###################################
 ## Global Attributes
 ###################################
-desc = runlab + ' simulation from Young et al., 2017 (ACP). x/y grid size = 120m with 105 vertical levels (20m resolution up to 1500m, then 50m resolution between 1500m and 3000m). Domain size = 16km x 16km.'
+desc = info1 + ' simulation from Young et al., 2017 (ACP). x/y grid size = 130x130 grid points (120m grid size) with 105 vertical levels (20m resolution up to 1500m, then 50m resolution between 1500m and 3000m). Domain size = 16km x 16km.'
 dataset.description = desc
 dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 dataset.source = 'UK Met Office Large Eddy Model (LEM), version 2.4, coupled with the Morrison et al., 2005 (JAS) microphysics scheme (ported from the Weather Research and Forecasting model).' 
