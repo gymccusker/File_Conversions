@@ -56,25 +56,17 @@ cp = 1004.6      # J/kg.K
 # Load in data
 ###################################
 
+rundir = '/gws/nopw/j04/ncas_weather/gyoung/ACCACIA/LEM/'
+
 nc1 = {}		# define nc1 as a dictionary
-if run1 < 10: 
-	strg1 = "%1.f" % run1 
-	os.chdir(''.join(['../LEM/r',strg1]))
-	strg0 = ''.join(['r',strg1])
-	for i in range(0, len(hours)):
-		strg2 = "%02d" % hours[i] # string of hour index
-		a1 = ''.join(['RUN000',strg1,'_00',strg2,'.nc']) # string of filename
-		strgi = "%1.f" % (i+1) # string of hour number
-		nc1[strgi] = Dataset(a1,'r')
-elif run1 >= 10: 
-	strg1 = "%2.f" % run1 
-	strg0 = ''.join(['r',strg1])
-	os.chdir(''.join(['../LEM/r',strg1]))
-	for i in range(0, len(hours)):
-		strg2 = "%02d" % hours[i] # string of hour index
-		a1 = ''.join(['RUN000',strg1,'_00',strg2,'.nc']) # string of filename
-		strgi = "%1.f" % (i+1) # string of hour number
-		nc1[strgi] = Dataset(a1,'r')
+strg1 = "%2.f" % run1 
+strg0 = ''.join(['r',strg1])
+os.chdir(strg1)
+for i in range(0, len(hours)):
+	strg2 = "%02d" % hours[i] # string of hour index
+	a1 = ''.join(['RUN0',strg1,'_00',strg2,'.nc']) # string of filename
+	strgi = "%1.f" % (i+1) # string of hour number
+	nc1[strgi] = Dataset(a1,'r')
 
 
 # ###################################
