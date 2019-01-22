@@ -85,9 +85,9 @@ rh1 = np.zeros([12,105])
 incloud1 = np.zeros([12,105])
 for i in range(0, len(hours)):
 	strgi = "%1.f" % (i+1) # string of hour number
-	icenum1[i,:] = (nc1[strgi]['QBAR07'][:]+nc1[strgi]['QBAR08'][:]+nc1[strgi]['QBAR09'][:])
+	icenum1[i,:] = nc1[strgi]['QBAR07'][:]+nc1[strgi]['QBAR08'][:]+nc1[strgi]['QBAR09'][:]
 	largeice1[i,:] = nc1[strgi]['ALL_Ni100'][:]+nc1[strgi]['ALL_Nis100'][:]
-	liqmass1[i,:] = (nc1[strgi]['QBAR02'][:]
+	liqmass1[i,:] = nc1[strgi]['QBAR02'][:]
 	watvap1[i,:] = nc1[strgi]['QBAR01'][:]
 	tempK1[i,:] = nc1[strgi]['ALL_TEMP'][1:]
 	pres1[i,:] = nc1[strgi]['PREFN'][:]
