@@ -56,18 +56,17 @@ cp = 1004.6      # J/kg.K
 # Load in data
 ###################################
 
-rundir = '/gws/nopw/j04/ncas_weather/gyoung/ACCACIA/LEM/'
-
 nc1 = {}		# define nc1 as a dictionary
 strg1 = "%2.f" % run1 
-strg0 = ''.join(['r',strg1])
-os.chdir(strg0)
+
+filedir = '/gws/nopw/j04/ncas_weather/gyoung/ACCACIA/LEM/r'
+rundir = "".join([filedir,strg1,'/'])
+
 for i in range(0, len(hours)):
 	strg2 = "%02d" % hours[i] # string of hour index
-	a1 = ''.join(['RUN0',strg1,'_00',strg2,'.nc']) # string of filename
+	a1 = ''.join([rundir,'RUN0',strg1,'_00',strg2,'.nc']) # string of filename
 	strgi = "%1.f" % (i+1) # string of hour number
 	nc1[strgi] = Dataset(a1,'r')
-
 
 # ###################################
 # # Pick file
