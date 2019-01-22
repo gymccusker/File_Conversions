@@ -118,7 +118,8 @@ print dataset.file_format
 ###################################
 ## Global Attributes
 ###################################
-desc = info1 + ' simulation from Young et al., 2017 (ACP). x/y grid size = 130x130 grid points (120m grid size) with 105 vertical levels (20m resolution up to 1500m, then 50m resolution between 1500m and 3000m). Domain size = 16km x 16km.'
+info2 = ' Cooper et al., 1986 parametrization used for primary ice nucleation. Model assumes oceanic surface.'
+desc = info1 + ' simulation from Young et al., 2017 (ACP). x/y grid size = 130x130 grid points (120m grid size) with 105 vertical levels (20m resolution up to 1500m, then 50m resolution between 1500m and 3000m). Domain size = 16km x 16km, centred on 75.0N, 24.5E. Model initialised with radiosonde data (sonde number 5) from ACCACIA flight B762 (23-MAR-2013).' + info2
 dataset.description = desc
 dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 dataset.source = 'UK Met Office Large Eddy Model (LEM), version 2.4, coupled with the Morrison et al., 2005 (JAS) microphysics scheme (ported from the Weather Research and Forecasting model).' 
