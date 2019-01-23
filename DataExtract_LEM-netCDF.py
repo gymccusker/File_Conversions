@@ -90,6 +90,7 @@ qvs1 = np.zeros([24,104])
 rh1 = np.zeros([24,104])
 incloud1 = np.zeros([24,104])
 ice1 = np.zeros([24,104,130,130])
+qliq1 = np.zeros([24,104,130,130])
 for i in range(0, len(hours)):
 	strgi = "%1.f" % (i+1) # string of hour number
 	icenum1[i,:] = (nc1[strgi]['QBAR07'][1:]+nc1[strgi]['QBAR08'][1:]+nc1[strgi]['QBAR09'][1:])/1000
@@ -103,6 +104,7 @@ for i in range(0, len(hours)):
 	rh1[i,:] = ((watvap1[i,:]/1000)/qvs1[i,:])*100
 	# incloud1[i,:] = (rh1[i,:]>=100).nonzero()
 	ice1[i,:,:,:] = (nc1[strgi]['Q07'][1:,:,:]+nc1[strgi]['Q08'][1:,:,:]+nc1[strgi]['Q09'][1:,:,:])/1000
+	qliq1[i,:,:,:] = (nc1[strgi]['Q02'][1:,:,:])*1000
 timesec1 = (nc1['24']['TIMES'][:])/3600
 Z1 = nc1['24']['ZN'][1:]
 X1 = nc1['24']['XN'][:]
@@ -232,6 +234,14 @@ nisg.long_name = 'total ice number concentration'
 nisg.comment = 'Sum of ice, snow, and graupel particles'
 nisg.units = 'L-1'
 nisg[:] = ice1[:]
+
+#### Qliq
+qliq = dataset.createVariable('qliq', np.float32, ('time','Z','X','Y',),fill_value='-9999')
+qliq.long_name = 'cloud liquid mass mixing ratio'
+qliq.comment = 'Only cloud liquid field included; rain category is separate.'
+qliq.units = 'g kg-1'
+qliq[:] = ice1[:]
+
 
 ###################################
 ## Write out file
