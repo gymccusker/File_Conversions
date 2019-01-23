@@ -88,15 +88,15 @@ rh1 = np.zeros([24,104])
 incloud1 = np.zeros([24,104])
 for i in range(0, len(hours)):
 	strgi = "%1.f" % (i+1) # string of hour number
-	icenum1[i,:] = nc1[strgi]['QBAR07'][1:]+nc1[strgi]['QBAR08'][1:]+nc1[strgi]['QBAR09'][1:]
-	largeice1[i,:] = nc1[strgi]['ALL_Ni100'][1:]+nc1[strgi]['ALL_Nis100'][1:]
-	liqmass1[i,:] = nc1[strgi]['QBAR02'][1:]
-	watvap1[i,:] = nc1[strgi]['QBAR01'][1:]
+	icenum1[i,:] = nc1[strgi]['QBAR07'][1:]+nc1[strgi]['QBAR08'][1:]+nc1[strgi]['QBAR09'][1:]/1000
+	largeice1[i,:] = nc1[strgi]['ALL_Ni100'][1:]+nc1[strgi]['ALL_Nis100'][1:]/1000
+	liqmass1[i,:] = nc1[strgi]['QBAR02'][1:]*1000
+	watvap1[i,:] = nc1[strgi]['QBAR01'][1:]*1000
 	tempK1[i,:] = nc1[strgi]['ALL_TEMP'][1:]
 	pres1[i,:] = nc1[strgi]['PREFN'][1:]
 	evs1[i,:] = (0.611*np.exp(17.27*(tempK1[i,:]-273.15)/((tempK1[i,:]-273.15)+237.3)))*1000
 	qvs1[i,:] = (0.622*evs1[i,:])/(pres1[i,:]-evs1[i,:])
-	rh1[i,:] = ((watvap1[i,:])/qvs1[i,:])*100
+	rh1[i,:] = ((watvap1[i,:]/1000)/qvs1[i,:])*100
 	# incloud1[i,:] = (rh1[i,:]>=100).nonzero()
 timesec1 = (nc1['24']['TIMES'][:])/3600
 Z1 = nc1['24']['ZN'][1:]
@@ -169,28 +169,28 @@ levels[:] = Z1[:]
 nisg = dataset.createVariable('nisg', np.float32, ('time','level',),fill_value='-9999')
 nisg.long_name = 'total ice number concentration'
 nisg.comment = 'Sum of ice, snow, and graupel particles'
-nisg.units = 'm-3'
+nisg.units = 'L-1'
 nisg[:] = icenum1[:]
 
 #### Nisg100
 nisg100 = dataset.createVariable('nisg100', np.float32, ('time','level',),fill_value='-9999')
 nisg100.long_name = 'total ice number concentration greater than 100micron'
 nisg100.comment = 'Sum of ice, snow, and graupel particles of sizes greater than 100micron'
-nisg100.units = 'm-3'
+nisg100.units = 'L-1'
 nisg100[:] = largeice1[:]
 
 #### Qliq
 qliq = dataset.createVariable('qliq', np.float32, ('time','level',),fill_value='-9999')
 qliq.long_name = 'cloud liquid mass mixing ratio'
 qliq.comment = 'Only cloud liquid field included; rain category is separate.'
-qliq.units = 'kg kg-1'
+qliq.units = 'g kg-1'
 qliq[:] = liqmass1[:]
 
 #### Qvap
 qvap = dataset.createVariable('qvap', np.float32, ('time','level',),fill_value='-9999')
 qvap.long_name = 'water vapour mixing ratio'
 qvap.comment = ''
-qvap.units = 'kg kg-1'
+qvap.units = 'g kg-1'
 qvap[:] = watvap1[:]
 
 #### Temperature
