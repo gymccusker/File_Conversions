@@ -25,14 +25,14 @@ import matplotlib.pyplot as plt
 ###################################
 ###################################
 
-# run1 = 120
-# info1 = 'C86_Ocean'
+run1 = 120
+info1 = 'C86_Ocean'
 
 # run1 = 135
 # info1 = 'D10_Ocean'
 
-run1 = 143
-info1 = 'ACC_Ocean'
+# run1 = 143
+# info1 = 'ACC_Ocean'
 
 # run7='120';		YES
 # info7='C86';
@@ -103,8 +103,8 @@ for i in range(0, len(hours)):
 	qvs1[i,:] = (0.622*evs1[i,:])/(pres1[i,:]-evs1[i,:])
 	rh1[i,:] = ((watvap1[i,:]/1000)/qvs1[i,:])*100
 	# incloud1[i,:] = (rh1[i,:]>=100).nonzero()
-	ice1[i,:,:,:] = (nc1[strgi]['Q07'][1:,:,:]+nc1[strgi]['Q08'][1:,:,:]+nc1[strgi]['Q09'][1:,:,:])/1000
-	qliq1[i,:,:,:] = (nc1[strgi]['Q02'][1:,:,:])*1000
+	# ice1[i,:,:,:] = (nc1[strgi]['Q07'][1:,:,:]+nc1[strgi]['Q08'][1:,:,:]+nc1[strgi]['Q09'][1:,:,:])/1000
+	# qliq1[i,:,:,:] = (nc1[strgi]['Q02'][1:,:,:])*1000
 timesec1 = (nc1['24']['TIMES'][:])/3600
 Z1 = nc1['24']['ZN'][1:]
 X1 = nc1['24']['XN'][:]
@@ -128,9 +128,9 @@ print dataset.file_format
 ###################################
 ## Global Attributes
 ###################################
-# info2 = ' Cooper et al., 1986 parametrization used for primary ice nucleation. Model assumes oceanic surface.'
+info2 = ' Cooper et al., 1986 parametrization used for primary ice nucleation. Model assumes oceanic surface.'
 # info2 = ' Approximation of the DeMott et al., 2010 parametrization used for primary ice nucleation (see Young et al., 2017 (ACP) for details). Model assumes oceanic surface.'
-info2 = ' Parametrization derived from ACCACIA ice number concentration measurements (measured using a 2-Dimensional Stereo particle imaging probe) used for primary ice nucleation (see Young et al., 2017 (ACP) for details). Model assumes oceanic surface.'
+# info2 = ' Parametrization derived from ACCACIA ice number concentration measurements (measured using a 2-Dimensional Stereo particle imaging probe) used for primary ice nucleation (see Young et al., 2017 (ACP) for details). Model assumes oceanic surface.'
 desc = info1 + ' simulation from Young et al., 2017 (ACP). x/y grid size = 130x130 grid points (120m grid size) with 104 vertical levels (20m resolution up to 1500m, then 50m resolution between 1500m and 3000m). Domain size = 16km x 16km, centred on 75.0N, 24.5E. Model initialised with radiosonde data (sonde number 5) from ACCACIA flight B762 (23-MAR-2013).' + info2
 dataset.description = desc
 dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -228,25 +228,25 @@ tempbar[:] = tempK1[:]
 ## Create 4-d variables
 ###################################
 ###################################
-#### Nisg
-nisg = dataset.createVariable('nisg', np.float32, ('time','Z','X','Y',),fill_value='-9999')
-nisg.long_name = 'total ice number concentration'
-nisg.comment = 'Sum of ice, snow, and graupel particles'
-nisg.units = 'L-1'
-nisg[:] = ice1[:]
+# #### Nisg
+# nisg = dataset.createVariable('nisg', np.float32, ('time','Z','X','Y',),fill_value='-9999')
+# nisg.long_name = 'total ice number concentration'
+# nisg.comment = 'Sum of ice, snow, and graupel particles'
+# nisg.units = 'L-1'
+# nisg[:] = ice1[:]
 
-#### Qliq
-qliq = dataset.createVariable('qliq', np.float32, ('time','Z','X','Y',),fill_value='-9999')
-qliq.long_name = 'cloud liquid mass mixing ratio'
-qliq.comment = 'Only cloud liquid field included; rain category is separate.'
-qliq.units = 'g kg-1'
-qliq[:] = ice1[:]
+# #### Qliq
+# qliq = dataset.createVariable('qliq', np.float32, ('time','Z','X','Y',),fill_value='-9999')
+# qliq.long_name = 'cloud liquid mass mixing ratio'
+# qliq.comment = 'Only cloud liquid field included; rain category is separate.'
+# qliq.units = 'g kg-1'
+# qliq[:] = ice1[:]
 
 
 ###################################
 ## Write out file
 ###################################
-# dataset.close()
+dataset.close()
 
 
 
