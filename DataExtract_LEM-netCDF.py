@@ -102,7 +102,7 @@ for i in range(0, len(hours)):
 	qvs1[i,:] = (0.622*evs1[i,:])/(pres1[i,:]-evs1[i,:])
 	rh1[i,:] = ((watvap1[i,:]/1000)/qvs1[i,:])*100
 	# incloud1[i,:] = (rh1[i,:]>=100).nonzero()
-	ice1[i,:,:,:] = (nc1[strgi]['Q07'][1:,:,:,:]+nc1[strgi]['Q08'][1:,:,:,:]+nc1[strgi]['Q09'][1:,:,:,:])/1000
+	ice1[i,:,:,:] = (nc1[strgi]['Q07'][1:,:,:]+nc1[strgi]['Q08'][1:,:,:]+nc1[strgi]['Q09'][1:,:,:])/1000
 timesec1 = (nc1['24']['TIMES'][:])/3600
 Z1 = nc1['24']['ZN'][1:]
 # X1 = nc1['24']['XN'][:]
