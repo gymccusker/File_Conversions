@@ -89,6 +89,7 @@ evs1 = np.zeros([24,104])
 qvs1 = np.zeros([24,104])
 rh1 = np.zeros([24,104])
 incloud1 = np.zeros([24,104])
+rh1 = np.zeros([24,104,130,130])
 for i in range(0, len(hours)):
 	strgi = "%1.f" % (i+1) # string of hour number
 	icenum1[i,:] = (nc1[strgi]['QBAR07'][1:]+nc1[strgi]['QBAR08'][1:]+nc1[strgi]['QBAR09'][1:])/1000
@@ -101,6 +102,7 @@ for i in range(0, len(hours)):
 	qvs1[i,:] = (0.622*evs1[i,:])/(pres1[i,:]-evs1[i,:])
 	rh1[i,:] = ((watvap1[i,:]/1000)/qvs1[i,:])*100
 	# incloud1[i,:] = (rh1[i,:]>=100).nonzero()
+	ice1[i,:,:,:] = (nc1[strgi]['Q07'][1:]+nc1[strgi]['Q08'][1:]+nc1[strgi]['Q09'][1:])/1000
 timesec1 = (nc1['24']['TIMES'][:])/3600
 Z1 = nc1['24']['ZN'][1:]
 # X1 = nc1['24']['XN'][:]
@@ -207,7 +209,7 @@ temp[:] = tempK1[:]
 ###################################
 ## Write out file
 ###################################
-dataset.close()
+# dataset.close()
 
 
 
@@ -218,12 +220,15 @@ dataset.close()
 # nc2 = Dataset('D10_Ocean.nc','r')
 # nc3 = Dataset('ACC_Ocean.nc','r')
 
+# fig = plt.figure(figsize=(4,6))
+
 # plt.subplot(211)
 # plt.plot(nc1.variables['nisg100'][6,:],nc1.variables['Z'][:],'m')
 # plt.plot(nc2.variables['nisg100'][6,:],nc2.variables['Z'][:],'g')
 # plt.plot(nc3.variables['nisg100'][6,:],nc3.variables['Z'][:],'b')
-# # plt.xlim([0,1.5])
-# # plt.ylim([0,2000])
+# plt.xlim([0,1.5])
+# plt.ylim([0,2000])
+# plt.grid('on')
 
 # plt.subplot(212)
 # plt.plot(nc1.variables['qliq'][6,:],nc1.variables['Z'][:],'m')
@@ -231,4 +236,5 @@ dataset.close()
 # plt.plot(nc3.variables['qliq'][6,:],nc3.variables['Z'][:],'b')
 # plt.xlim([0,0.7])
 # plt.ylim([0,2000])
+# plt.grid('on')
 # plt.show()
