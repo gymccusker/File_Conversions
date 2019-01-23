@@ -25,11 +25,11 @@ import matplotlib.pyplot as plt
 ###################################
 ###################################
 
-# run1 = 120
-# info1 = 'C86_Ocean'
+run1 = 120
+info1 = 'C86_Ocean'
 
-run1 = 135
-info1 = 'D10_Ocean'
+# run1 = 135
+# info1 = 'D10_Ocean'
 
 # run7='120';		YES
 # info7='C86';
