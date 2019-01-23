@@ -105,8 +105,8 @@ for i in range(0, len(hours)):
 	ice1[i,:,:,:] = (nc1[strgi]['Q07'][1:,:,:]+nc1[strgi]['Q08'][1:,:,:]+nc1[strgi]['Q09'][1:,:,:])/1000
 timesec1 = (nc1['24']['TIMES'][:])/3600
 Z1 = nc1['24']['ZN'][1:]
-# X1 = nc1['24']['XN'][:]
-# Y1 = nc1['24']['YN'][:]
+X1 = nc1['24']['XN'][:]
+Y1 = nc1['24']['YN'][:]
 times1=np.arange(1,25)
 
 ##--------------------------------------------------------------------------
@@ -147,7 +147,9 @@ dataset.set_fill_off()
 ## Data dimensions
 ###################################
 time = dataset.createDimension('time', np.size(icenum1,0))
-level = dataset.createDimension('level', np.size(icenum1,1)) 
+Z = dataset.createDimension('Z', np.size(icenum1,1)) 
+X = dataset.createDimension('X', np.size(ice1,2)) 
+Y = dataset.createDimension('Y', np.size(ice1,3)) 
 
 ###################################
 ## Dimensions variables
@@ -159,11 +161,25 @@ times.units = ['hours since 09:00:00 on 23-MAR-2013']
 times[:] = times1[:]
 
 #### Levels
-Z = dataset.createVariable('Z', np.float32, ('level',),fill_value='-9999') 
+Z = dataset.createVariable('Z', np.float32, ('Z',),fill_value='-9999') 
 Z.long_name = 'Altitude'
 Z.comment = 'Levels spaced by 20m up to 1500m, then spaced by 50m between 1500m and 3000m'
 Z.units = 'm'
 Z[:] = Z1[:]
+
+#### X
+X = dataset.createVariable('X', np.float32, ('X',),fill_value='-9999') 
+X.long_name = 'X'
+X.comment = 'grid size = 120m'
+X.units = 'm'
+X[:] = X1[:]
+
+#### Y
+Y = dataset.createVariable('Y', np.float32, ('Y',),fill_value='-9999') 
+Y.long_name = 'Y'
+Y.comment = 'grid size = 120m'
+Y.units = 'm'
+Y[:] = Y1[:]
 
 ###################################
 ###################################
@@ -171,40 +187,51 @@ Z[:] = Z1[:]
 ###################################
 ###################################
 #### Nisg
-nisg = dataset.createVariable('nisg', np.float32, ('time','level',),fill_value='-9999')
+nisgbar = dataset.createVariable('nisgbar', np.float32, ('time','Z',),fill_value='-9999')
+nisgbar.long_name = 'domain-averaged total ice number concentration'
+nisgbar.comment = 'Sum of ice, snow, and graupel particles'
+nisgbar.units = 'L-1'
+nisgbar[:] = icenum1[:]
+
+#### Nisg100
+nisg100bar = dataset.createVariable('nisg100bar', np.float32, ('time','Z',),fill_value='-9999')
+nisg100bar.long_name = 'domain-averaged total ice number concentration greater than 100micron'
+nisg100bar.comment = 'Sum of ice, snow, and graupel particles of sizes greater than 100micron'
+nisg100bar.units = 'L-1'
+nisg100bar[:] = largeice1[:]
+
+#### Qliq
+qliqbar = dataset.createVariable('qliqbar', np.float32, ('time','Z',),fill_value='-9999')
+qliqbar.long_name = 'domain-averaged cloud liquid mass mixing ratio'
+qliqbar.comment = 'Only cloud liquid field included; rain category is separate.'
+qliqbar.units = 'g kg-1'
+qliqbar[:] = liqmass1[:]
+
+#### Qvap
+qvapbar = dataset.createVariable('qvapbar', np.float32, ('time','Z',),fill_value='-9999')
+qvapbar.long_name = 'domain-averaged water vapour mixing ratio'
+qvapbar.comment = ''
+qvapbar.units = 'g kg-1'
+qvapbar[:] = watvap1[:]
+
+#### Temperature
+tempbar = dataset.createVariable('tempbar', np.float32, ('time','Z',),fill_value='-9999')
+tempbar.long_name = 'domain-averaged temperature'
+tempbar.comment = ''
+tempbar.units = 'K'
+tempbar[:] = tempK1[:]
+
+###################################
+###################################
+## Create 4-d variables
+###################################
+###################################
+#### Nisg
+nisg = dataset.createVariable('nisg', np.float32, ('time','Z','X','Y',),fill_value='-9999')
 nisg.long_name = 'total ice number concentration'
 nisg.comment = 'Sum of ice, snow, and graupel particles'
 nisg.units = 'L-1'
-nisg[:] = icenum1[:]
-
-#### Nisg100
-nisg100 = dataset.createVariable('nisg100', np.float32, ('time','level',),fill_value='-9999')
-nisg100.long_name = 'total ice number concentration greater than 100micron'
-nisg100.comment = 'Sum of ice, snow, and graupel particles of sizes greater than 100micron'
-nisg100.units = 'L-1'
-nisg100[:] = largeice1[:]
-
-#### Qliq
-qliq = dataset.createVariable('qliq', np.float32, ('time','level',),fill_value='-9999')
-qliq.long_name = 'cloud liquid mass mixing ratio'
-qliq.comment = 'Only cloud liquid field included; rain category is separate.'
-qliq.units = 'g kg-1'
-qliq[:] = liqmass1[:]
-
-#### Qvap
-qvap = dataset.createVariable('qvap', np.float32, ('time','level',),fill_value='-9999')
-qvap.long_name = 'water vapour mixing ratio'
-qvap.comment = ''
-qvap.units = 'g kg-1'
-qvap[:] = watvap1[:]
-
-#### Temperature
-temp = dataset.createVariable('temp', np.float32, ('time','level',),fill_value='-9999')
-temp.long_name = 'temperature'
-temp.comment = ''
-temp.units = 'K'
-temp[:] = tempK1[:]
-
+nisg[:] = ice1[:]
 
 ###################################
 ## Write out file
