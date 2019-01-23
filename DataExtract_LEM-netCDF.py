@@ -25,11 +25,11 @@ import matplotlib.pyplot as plt
 ###################################
 ###################################
 
-run1 = 120
-info1 = 'C86_Ocean'
+# run1 = 120
+# info1 = 'C86_Ocean'
 
-# run1 = 135
-# info1 = 'D10_Ocean'
+run1 = 135
+info1 = 'D10_Ocean'
 
 # run1 = 143
 # info1 = 'ACC_Ocean'
@@ -128,8 +128,8 @@ print dataset.file_format
 ###################################
 ## Global Attributes
 ###################################
-info2 = ' Cooper et al., 1986 parametrization used for primary ice nucleation. Model assumes oceanic surface.'
-# info2 = ' Approximation of the DeMott et al., 2010 parametrization used for primary ice nucleation (see Young et al., 2017 (ACP) for details). Model assumes oceanic surface.'
+# info2 = ' Cooper et al., 1986 parametrization used for primary ice nucleation. Model assumes oceanic surface.'
+info2 = ' Approximation of the DeMott et al., 2010 parametrization used for primary ice nucleation (see Young et al., 2017 (ACP) for details). Model assumes oceanic surface.'
 # info2 = ' Parametrization derived from ACCACIA ice number concentration measurements (measured using a 2-Dimensional Stereo particle imaging probe) used for primary ice nucleation (see Young et al., 2017 (ACP) for details). Model assumes oceanic surface.'
 desc = info1 + ' simulation from Young et al., 2017 (ACP). x/y grid size = 130x130 grid points (120m grid size) with 104 vertical levels (20m resolution up to 1500m, then 50m resolution between 1500m and 3000m). Domain size = 16km x 16km, centred on 75.0N, 24.5E. Model initialised with radiosonde data (sonde number 5) from ACCACIA flight B762 (23-MAR-2013).' + info2
 dataset.description = desc
