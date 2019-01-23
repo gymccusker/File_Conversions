@@ -25,14 +25,14 @@ import matplotlib.pyplot as plt
 ###################################
 ###################################
 
-# run1 = 120
-# info1 = 'C86_Ocean'
+run1 = 120
+info1 = 'C86_Ocean'
 
 # run1 = 135
 # info1 = 'D10_Ocean'
 
-run1 = 143
-info1 = 'ACC_Ocean'
+# run1 = 143
+# info1 = 'ACC_Ocean'
 
 # run7='120';		YES
 # info7='C86';
@@ -91,8 +91,8 @@ rh1 = np.zeros([24,104])
 incloud1 = np.zeros([24,104])
 for i in range(0, len(hours)):
 	strgi = "%1.f" % (i+1) # string of hour number
-	icenum1[i,:] = nc1[strgi]['QBAR07'][1:]+nc1[strgi]['QBAR08'][1:]+nc1[strgi]['QBAR09'][1:]/1000
-	largeice1[i,:] = nc1[strgi]['ALL_Ni100'][1:]+nc1[strgi]['ALL_Nis100'][1:]/1000
+	icenum1[i,:] = (nc1[strgi]['QBAR07'][1:]+nc1[strgi]['QBAR08'][1:]+nc1[strgi]['QBAR09'][1:])/1000
+	largeice1[i,:] = (nc1[strgi]['ALL_Ni100'][1:]+nc1[strgi]['ALL_Nis100'][1:])/1000
 	liqmass1[i,:] = nc1[strgi]['QBAR02'][1:]*1000
 	watvap1[i,:] = nc1[strgi]['QBAR01'][1:]*1000
 	tempK1[i,:] = nc1[strgi]['ALL_TEMP'][1:]
@@ -124,9 +124,9 @@ print dataset.file_format
 ###################################
 ## Global Attributes
 ###################################
-# info2 = ' Cooper et al., 1986 parametrization used for primary ice nucleation. Model assumes oceanic surface.'
+info2 = ' Cooper et al., 1986 parametrization used for primary ice nucleation. Model assumes oceanic surface.'
 # info2 = ' Approximation of the DeMott et al., 2010 parametrization used for primary ice nucleation (see Young et al., 2017 (ACP) for details). Model assumes oceanic surface.'
-info2 = ' Parametrization derived from ACCACIA ice number concentration measurements (measured using a 2-Dimensional Stereo particle imaging probe) used for primary ice nucleation (see Young et al., 2017 (ACP) for details). Model assumes oceanic surface.'
+# info2 = ' Parametrization derived from ACCACIA ice number concentration measurements (measured using a 2-Dimensional Stereo particle imaging probe) used for primary ice nucleation (see Young et al., 2017 (ACP) for details). Model assumes oceanic surface.'
 desc = info1 + ' simulation from Young et al., 2017 (ACP). x/y grid size = 130x130 grid points (120m grid size) with 104 vertical levels (20m resolution up to 1500m, then 50m resolution between 1500m and 3000m). Domain size = 16km x 16km, centred on 75.0N, 24.5E. Model initialised with radiosonde data (sonde number 5) from ACCACIA flight B762 (23-MAR-2013).' + info2
 dataset.description = desc
 dataset.history = 'Created ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -208,3 +208,27 @@ temp[:] = tempK1[:]
 ## Write out file
 ###################################
 dataset.close()
+
+
+
+###################################
+## TESTING
+###################################
+# nc1 = Dataset('C86_Ocean.nc','r')
+# nc2 = Dataset('D10_Ocean.nc','r')
+# nc3 = Dataset('ACC_Ocean.nc','r')
+
+# plt.subplot(211)
+# plt.plot(nc1.variables['nisg100'][6,:],nc1.variables['Z'][:],'m')
+# plt.plot(nc2.variables['nisg100'][6,:],nc2.variables['Z'][:],'g')
+# plt.plot(nc3.variables['nisg100'][6,:],nc3.variables['Z'][:],'b')
+# # plt.xlim([0,1.5])
+# # plt.ylim([0,2000])
+
+# plt.subplot(212)
+# plt.plot(nc1.variables['qliq'][6,:],nc1.variables['Z'][:],'m')
+# plt.plot(nc2.variables['qliq'][6,:],nc2.variables['Z'][:],'g')
+# plt.plot(nc3.variables['qliq'][6,:],nc3.variables['Z'][:],'b')
+# plt.xlim([0,0.7])
+# plt.ylim([0,2000])
+# plt.show()
